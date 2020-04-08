@@ -1,11 +1,11 @@
 test_vornet.py
 vornet_template.py
-vornetv2.py
+vornet_acc.py
 Extra Reading/
-Extra Data/
+Data/Accuracy
 Results/
-Data/Videos/Leo Messi _ Dribbling Skills In Slow Motion-Ix97CZvelmE.mp4
-Data/Videos/Wii Sports - Tennis-CFgqSekt-SA.mp4
+Data/Results
+Data/Videos/
 Models/mask-rcnn/mask_rcnn_weights.pb
 Models/yolo/yolov3.weights
 
