@@ -334,10 +334,21 @@ class VOR():
                     
     def out_video(self):
 
+        videos = list()
+        videos.append(os.listdir(self.input_video_path))
+        full_video_name = videos[0][0]
+        video = cv2.VideoCapture(os.path.join(self.input_video_path, full_video_name))
+        (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
+
+        if int(major_ver)  < 3 :
+            fps = video.get(cv2.cv.CV_CAP_PROP_FPS)
+        else :
+            fps = video.get(cv2.CAP_PROP_FPS)
+
+        video.release()      
         print ('Preparing video...')
         frames = self.output_frames_path
         video = os.path.join(self.output_video_path, 'output.mp4')
-        fps = int(args.fps)
 
         frame_list = list()
         filenames = list()
@@ -372,7 +383,6 @@ if __name__ == "__main__":
     parser.add_argument('-m', '--model', action='store', help='Give model configuration. yolo or mask-rcnn', default='yolo')
     parser.add_argument('-b', '--background', action='store', help='Give background generation technique. median or mode', default='mode')
     parser.add_argument('-t', '--target', action='store', help='Enter target object')
-    parser.add_argument('-f', '--fps', action='store', help='Enter frames per second')
     args = parser.parse_args()
 
     if args.action == 'create':
