@@ -80,7 +80,6 @@ class VOR():
         image_list.sort(key = lambda x: int(x[6:-4]))
 
         for i in range(len(image_list)):
-        # for i in range(10):
             frame = os.path.join(ip_dir, image_list[i])
             img = cv2.imread(frame) 
             image_from_folder.append(img)
@@ -111,7 +110,6 @@ class VOR():
             all_frames = self.get_frames(self.extracted_frames_path)
             if method == 'median':
                 est_bg = np.median(all_frames, axis=0)
-                # cv2.imshow('Median', est_bg)
                 background = os.path.join(self.background_path, 'background_' + str(method) + '.jpg')
                 pred = cv2.imwrite(background, est_bg)
                 if pred:
@@ -121,7 +119,6 @@ class VOR():
 
             elif method == 'mode':
                 est_bg = stats.mode(all_frames, axis=0)
-                # cv2.imshow('Mode', est_bg[0][0])
                 background = os.path.join(self.background_path, 'background_' + str(method) + '.jpg')
                 pred = cv2.imwrite(background, est_bg[0][0]) 
                 if pred:
@@ -140,7 +137,6 @@ class VOR():
     def remove_object(self, image, classes, class_id, confidence, x, y, x_plus_w, y_plus_h, target, i):
         
         image[y:y_plus_h, x:x_plus_w] = [0,0,0]
-        # cv2_imshow(image)
         filename = os.path.join(self.object_removed_frames, 'frame_' + str(target) + '_' + str(i) + '.jpg')
         cv2.imwrite(filename, image)
         print('Object found in frame {}. Save frame for processing'.format(i))
@@ -152,7 +148,6 @@ class VOR():
         full_bkg = cv2.imread(backg)
         inp = full_bkg[y:y_plus_h, x:x_plus_w]
         full_img[y:y_plus_h, x:x_plus_w] = inp
-        # cv2_imshow(full_img)
         filename = os.path.join(self.output_frames_path, 'out_' + str(ipf) + '.jpg')
         res = cv2.imwrite(filename, full_img)
         print ('Frame {} process complete!'.format(ipf))
@@ -162,10 +157,6 @@ class VOR():
         
         full_img = cv2.imread(image)
         full_bkg = cv2.imread(backg)
-        # inp = full_img[y:y+mask.shape[0], x:x+mask.shape[1]]
-        # bkg = full_bkg[y:y+mask.shape[0], x:x+mask.shape[1]]
-        # print (x, x_plus_w, y, y_plus_h, mask.shape, inp.shape, bkg.shape)
-        # cv2.imshow('inp',inp)
         
         for i in range(mask.shape[0]):
             for j in range(mask.shape[1]):
@@ -274,19 +265,6 @@ class VOR():
             # get ALL output layers ie detect all objects in input image
             (boxes, masks) = net.forward(["detection_out_final", "detection_masks"])
 
-            # confidence = []
-            # classID = []
-            # idx = 0
-            # clone = 0
-
-            # loop over the number of detected objects and select one with maximum confidence
-            # for i in range(0, boxes.shape[2]):
-            #     classID.append(int(boxes[0, 0, i, 1]))
-            #     confidence.append(boxes[0, 0, i, 2])
-            
-            # idx = np.argmax(confidence)
-            # max_conf = confidence[idx]
-
             for i in range(0, boxes.shape[2]):
                 classID = int(boxes[0, 0, i, 1])
                 confidence = boxes[0, 0, i, 2]
@@ -328,7 +306,6 @@ class VOR():
                             break
 
                     else:
-                        # print('Sorry! Object not found in frame {}. Object detected as {}'.format(ipf, str(label)))
                         filename = os.path.join(self.output_frames_path, 'out_' + str(ipf) + '.jpg')
                         cv2.imwrite(filename, image)
                     
