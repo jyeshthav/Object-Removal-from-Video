@@ -79,7 +79,8 @@ class VOR():
 
         image_list.sort(key = lambda x: int(x[6:-4]))
 
-        for i in range(len(image_list)):
+        # for i in range(len(image_list)):
+        for i in range(1):
             frame = os.path.join(ip_dir, image_list[i])
             img = cv2.imread(frame) 
             image_from_folder.append(img)
@@ -182,6 +183,11 @@ class VOR():
         
         print ('Model chosen: yolo')
         classes, net = self.model_train(model)
+        if not args.target in classes:
+            print('Such a target object cannot be detected. Please select object from given classes only: ')
+            print(classes)
+            exit()
+
         all_frames = self.get_frames(self.extracted_frames_path)
         for ipf in range(len(all_frames)):
 
@@ -247,9 +253,13 @@ class VOR():
     def mask_rcnn(self, model, bg):
         
         print ('Model chosen: mask-rcnn')
-        all_frames = self.get_frames(self.extracted_frames_path)
         classes, net = self.model_train(model)
-
+        if not args.target in classes:
+            print('Such a target object cannot be detected. Please select object from given classes only: ')
+            print(classes)
+            exit()
+    
+        all_frames = self.get_frames(self.extracted_frames_path)
         for ipf in range(len(all_frames)):
 
             image = all_frames[ipf]
