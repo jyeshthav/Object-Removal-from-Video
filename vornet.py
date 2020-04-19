@@ -79,8 +79,7 @@ class VOR():
 
         image_list.sort(key = lambda x: int(x[6:-4]))
 
-        # for i in range(len(image_list)):
-        for i in range(1):
+        for i in range(len(image_list)):
             frame = os.path.join(ip_dir, image_list[i])
             img = cv2.imread(frame) 
             image_from_folder.append(img)
